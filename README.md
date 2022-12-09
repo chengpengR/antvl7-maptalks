@@ -21,11 +21,9 @@
 ### L7 plugin for maptalks use in maptalks
 
 ```jsx pure
-import * as L from 'maptalks';
-import 'maptalks/dist/maptalks.css';
-import { LineLayer } from '@antv/l7';
-import { L7Layer } from '@antv/l7-maptalks';
-
+import { Scene, PolygonLayer, LineLayer } from "@antv/l7";
+import { TileLayer } from 'maptalks';
+import { Map, data } from 'l7-maptalks';
 import React, { useEffect } from 'react';
 
 export default () => {
