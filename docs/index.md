@@ -24,7 +24,6 @@ L7-maptalks a lib you can be use L7 or maptalks. it means in L7 project you can 
 
 ```
 
-
 ### L7 plugin for maptalks use in maptalks
 
 ```jsx pure
@@ -49,7 +48,7 @@ export default () => {
     scene.on("loaded", () => {
       var china_vec_02 = new TileLayer('vec', {
         tileSystem : [1, -1, -180, 90],
-        urlTemplate: 'https://t{s}.tianditu.gov.cn/vec_c/wmts?SERVICE=WMTS&REQUEST=GetTile&VERSION=1.0.0&LAYER=vec&STYLE=default&TILEMATRIXSET=c&FORMAT=tiles&TILEMATRIX={z}&TILEROW={y}&TILECOL={x}&tk=59d3a78163c2741d6aa0cb12f77fa62a',
+        urlTemplate: 'https://t{s}.tianditu.gov.cn/vec_c/wmts?SERVICE=WMTS&REQUEST=GetTile&VERSION=1.0.0&LAYER=vec&STYLE=default&TILEMATRIXSET=c&FORMAT=tiles&TILEMATRIX={z}&TILEROW={y}&TILECOL={x}&tk='+,
         subdomains:['1', '2', '3', '4', '5'],
         spatialReference:{
           projection:'EPSG:4326'
@@ -57,7 +56,7 @@ export default () => {
       });
       var china_txt_02 = new TileLayer('txt', {
         tileSystem : [1, -1, -180, 90],
-        urlTemplate: 'https://t{s}.tianditu.gov.cn/cva_c/wmts?SERVICE=WMTS&REQUEST=GetTile&VERSION=1.0.0&LAYER=cva&STYLE=default&TILEMATRIXSET=c&FORMAT=tiles&TILEMATRIX={z}&TILEROW={y}&TILECOL={x}&tk=59d3a78163c2741d6aa0cb12f77fa62a',
+        urlTemplate: 'https://t{s}.tianditu.gov.cn/cva_c/wmts?SERVICE=WMTS&REQUEST=GetTile&VERSION=1.0.0&LAYER=cva&STYLE=default&TILEMATRIXSET=c&FORMAT=tiles&TILEMATRIX={z}&TILEROW={y}&TILECOL={x}&tk=',
         subdomains:['1', '2', '3', '4', '5'],
         spatialReference:{
           projection:'EPSG:4326'
@@ -92,7 +91,7 @@ export default () => {
     return () => {
       scene.destroy();
     };
-    
+
   }, []);
 
   return (
