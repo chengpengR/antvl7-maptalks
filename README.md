@@ -32,7 +32,7 @@ export default () => {
       map: new Map({
         style: "light",
         center: [112, 30],
-        zoom: 3,
+        zoom: 4,
         pitch: 45,
         rotation: 0,
       }),
