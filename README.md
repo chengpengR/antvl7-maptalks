@@ -17,7 +17,6 @@
 
 ```
 
-
 ### L7 plugin for maptalks use in maptalks
 
 ```jsx pure
@@ -32,8 +31,8 @@ export default () => {
       id: "map",
       map: new Map({
         style: "light",
-        center: [109.40618991851805, 24.336068050903056],
-        zoom: 7.5,
+        center: [112, 30],
+        zoom: 3,
         pitch: 45,
         rotation: 0,
       }),
@@ -41,51 +40,54 @@ export default () => {
 
     scene.on("loaded", () => {
       var china_vec_02 = new TileLayer('vec', {
-        tileSystem : [1, -1, -180, 90],
-        urlTemplate: 'https://t{s}.tianditu.gov.cn/vec_c/wmts?SERVICE=WMTS&REQUEST=GetTile&VERSION=1.0.0&LAYER=vec&STYLE=default&TILEMATRIXSET=c&FORMAT=tiles&TILEMATRIX={z}&TILEROW={y}&TILECOL={x}&tk=59d3a78163c2741d6aa0cb12f77fa62a',
-        subdomains:['1', '2', '3', '4', '5'],
-        spatialReference:{
-          projection:'EPSG:4326'
+        tileSystem: [1, -1, -180, 90],
+        urlTemplate:
+          'https://t{s}.tianditu.gov.cn/vec_c/wmts?SERVICE=WMTS&REQUEST=GetTile&VERSION=1.0.0&LAYER=vec&STYLE=default&TILEMATRIXSET=c&FORMAT=tiles&TILEMATRIX={z}&TILEROW={y}&TILECOL={x}&tk=b72aa81ac2b3cae941d1eb213499e15e',
+        subdomains: ['1', '2', '3', '4', '5'],
+        spatialReference: {
+          projection: 'EPSG:4326',
         },
       });
       var china_txt_02 = new TileLayer('txt', {
-        tileSystem : [1, -1, -180, 90],
-        urlTemplate: 'https://t{s}.tianditu.gov.cn/cva_c/wmts?SERVICE=WMTS&REQUEST=GetTile&VERSION=1.0.0&LAYER=cva&STYLE=default&TILEMATRIXSET=c&FORMAT=tiles&TILEMATRIX={z}&TILEROW={y}&TILECOL={x}&tk=59d3a78163c2741d6aa0cb12f77fa62a',
-        subdomains:['1', '2', '3', '4', '5'],
-        spatialReference:{
-          projection:'EPSG:4326'
+        tileSystem: [1, -1, -180, 90],
+        urlTemplate:
+          'https://t{s}.tianditu.gov.cn/cva_c/wmts?SERVICE=WMTS&REQUEST=GetTile&VERSION=1.0.0&LAYER=cva&STYLE=default&TILEMATRIXSET=c&FORMAT=tiles&TILEMATRIX={z}&TILEROW={y}&TILECOL={x}&tk=b72aa81ac2b3cae941d1eb213499e15e',
+        subdomains: ['1', '2', '3', '4', '5'],
+        spatialReference: {
+          projection: 'EPSG:4326',
         },
       });
       (scene.getMapService() as any).map?.addLayer(china_vec_02);
       (scene.getMapService() as any).map?.addLayer(china_txt_02);
 
-      const polygon = new PolygonLayer({
-        zIndex: 3,
-      })
-        .source(data)
-        .color("red")
-        .shape("fill")
-        .active(true);
-
-      const line = new LineLayer({
-        zIndex: 3,
-      })
-        .source(data)
-        .color("#fff")
-        .active(true)
-        .size(1)
-        .style({
-          lineType: "dash",
-          dashArray: [2, 2],
-        });
-      scene.addLayer(polygon);
-      scene.addLayer(line);
+      fetch('https://gw.alipayobjects.com/os/rmsportal/UEXQMifxtkQlYfChpPwT.txt')
+      .then((res) => res.text())
+      .then((data) => {
+        const layer = new LineLayer({})
+          .source(data, {
+            parser: {
+              type: 'csv',
+              x: 'lng1',
+              y: 'lat1',
+              x1: 'lng2',
+              y1: 'lat2',
+            },
+          })
+          .size(1)
+          .shape('arc')
+          .color('#8C1EB2')
+          .style({
+            opacity: 0.8,
+            blur: 0.99,
+          });
+        scene.addLayer(layer);
+      });
     });
 
     return () => {
       scene.destroy();
     };
-    
+
   }, []);
 
   return (
