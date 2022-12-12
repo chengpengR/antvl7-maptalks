@@ -1,7 +1,7 @@
 /**
  * MapboxService
  */
-import { IMercator, IViewport, BaseMapService } from '@antv/l7';
+import { IMercator, IViewport, BaseMapService, Bounds, IStatusOptions } from '@antv/l7';
 import { MercatorCoordinate } from '@antv/l7-map';
 import { Map, Point, Coordinate } from 'maptalks';
 import 'maptalks/dist/maptalks.css';
@@ -126,6 +126,54 @@ export default class MapService extends BaseMapService<Map> {
     const panels = this.map.getPanels() as Record<string, HTMLElement>;
     this.markerContainer = panels.frontStatic;
   }
+  public setCenter(lonlat: [number, number]) {
+    this.map.setCenter(new Coordinate(lonlat));
+  }
+
+  public setMaxZoom(max: number) {
+    this.map.setMaxZoom(max + 1);
+  }
+
+  public setMinZoom(max: number) {
+    this.map.setMinZoom(max + 1);
+  }
+
+  public getBounds() {
+    const { xmin, ymin, xmax, ymax } = this.map.getExtent();
+    return [
+      [xmin, ymin],
+      [xmax, ymax],
+    ] as Bounds;
+  }
+
+  public fitBounds(bounds: Bounds, options?: any) {
+    this.map.fitExtent(bounds.flat());
+  }
+
+  public setZoomAndCenter(zoom: number, center: [number, number]) {
+    this.map.flyTo({
+      //maptalks与l7相差1
+      zoom: zoom + 1,
+      center,
+    });
+  }
+
+  public setZoom(zoom: number) {
+    this.map.setZoom(zoom + 1);
+  }
+
+  public panTo(p: [number, number]) {
+    this.map.panTo(new Coordinate(p));
+  }
+
+  setMapStatus(option: Partial<IStatusOptions>) {
+    throw new Error('Method not implemented.');
+  }
+
+  setMapStyle(style: any) {
+    throw new Error('Method not implemented.');
+  }
+
   public meterToCoord(center: [number, number], outer: [number, number]) {
     // 统一根据经纬度来转化
     // Tip: 实际米距离 unit meter
@@ -177,6 +225,12 @@ export default class MapService extends BaseMapService<Map> {
     return cur;
   }
 
+  public exportMap(type: 'jpg' | 'png'): string {
+    return this.map.toDataURL({
+      mimeType: `image/${type === 'jpg' ? 'jpeg' : 'png'}`,
+    });
+  }
+
   public getZoomScale(toZoom: number, fromZoom: number) {
     var z = fromZoom ?? this.getZoom();
     var to = this.map.getResolution(toZoom),
@@ -194,11 +248,11 @@ export default class MapService extends BaseMapService<Map> {
     }
     const $amapdiv = document.createElement('div');
     $amapdiv.style.cssText += `
-       position: absolute;
-       top: 0;
-       height: 100%;
-       width: 100%;
-     `;
+			position: absolute;
+			top: 0;
+			height: 100%;
+			width: 100%;
+		`;
     $amapdiv.id = 'l7_maptalks_div' + mapdivCount++;
     $wrapper.appendChild($amapdiv);
     return $amapdiv;
