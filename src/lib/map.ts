@@ -107,6 +107,7 @@ export default class MapService extends BaseMapService<Map> {
     this.map.on('moving', this.handleCameraChanged.bind(this));
     this.map.on('zooming', this.handleCameraChanged.bind(this));
     this.map.on('pitch', this.handleCameraChanged.bind(this));
+    this.map.on('resize', this.handleCameraChanged.bind(this));
     this.map.on('viewchange', this.handleCameraChanged.bind(this));
 
     // 触发首次渲染
@@ -199,6 +200,7 @@ export default class MapService extends BaseMapService<Map> {
     const bearing = this.map.getBearing();
     const { width: x, height: y } = this.map.getSize();
     const zoom = this.getMapBoxZoom();
+    console.log(zoom);
 
     (this.viewport as IViewport).syncWithMapCamera({
       bearing,
@@ -214,6 +216,7 @@ export default class MapService extends BaseMapService<Map> {
   };
 
   private getMapBoxZoom() {
+    return this.map.getZoom() - 1;
     const MAX_RES = (2 * 6378137 * Math.PI) / (256 * Math.pow(2, 20));
     const res = this.map.getResolution();
     return 19 - Math.log(res / MAX_RES) / Math.LN2;
