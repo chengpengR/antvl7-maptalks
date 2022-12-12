@@ -216,7 +216,6 @@ export default class MapService extends BaseMapService<Map> {
   };
 
   private getMapBoxZoom() {
-    return this.map.getZoom() - 1;
     const MAX_RES = (2 * 6378137 * Math.PI) / (256 * Math.pow(2, 20));
     const res = this.map.getResolution();
     return 19 - Math.log(res / MAX_RES) / Math.LN2;
