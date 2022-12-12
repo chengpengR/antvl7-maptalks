@@ -41,11 +41,13 @@
   
   "peerDependencies": {
     "@antv/l7": "^2.9.26",
+    "@antv/l7-map": "^2.9.26",
     "maptalks": "^1.0.0-rc.17",
     "react": "^18.0.0"
   },
   "devDependencies": {
     "@antv/l7": "^2.9.26",
+    "@antv/l7-map": "^2.9.26",
     "maptalks": "^1.0.0-rc.17",
     "@testing-library/jest-dom": "^5.15.1",
     "@testing-library/react": "^13.0.0",

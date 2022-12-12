@@ -2,6 +2,7 @@
  * MapboxService
  */
 import { IMercator, IViewport, BaseMapService } from '@antv/l7';
+import { MercatorCoordinate } from '@antv/l7-map';
 import { Map, Point, Coordinate } from 'maptalks';
 import 'maptalks/dist/maptalks.css';
 import { mat4, vec3 } from 'gl-matrix';
@@ -10,6 +11,7 @@ import Viewport from './Viewport';
 var mapdivCount = 0;
 
 export default class MapService extends BaseMapService<Map> {
+  // @ts-ignore
   public viewport: Viewport;
 
   public getType() {
@@ -42,10 +44,7 @@ export default class MapService extends BaseMapService<Map> {
     scale: [number, number, number] = [1, 1, 1],
     origin: IMercator = { x: 0, y: 0, z: 0 },
   ): number[] {
-    const modelAsMercatorCoordinate = window.mapboxgl.MercatorCoordinate.fromLngLat(
-      lnglat,
-      altitude,
-    );
+    const modelAsMercatorCoordinate = MercatorCoordinate.fromLngLat(lnglat, altitude);
     // @ts-ignore
     const meters = modelAsMercatorCoordinate.meterInMercatorCoordinateUnits();
     const modelMatrix = mat4.create();
@@ -80,7 +79,7 @@ export default class MapService extends BaseMapService<Map> {
       style = 'light',
       rotation = 0,
       mapInstance,
-      version = 'Leaflet',
+      version = 'maptalks',
       mapSize = 10000,
       ...rest
     } = this.config;
@@ -107,6 +106,9 @@ export default class MapService extends BaseMapService<Map> {
     this.map.on('loaded', this.handleCameraChanged.bind(this));
     this.map.on('moving', this.handleCameraChanged.bind(this));
     this.map.on('zooming', this.handleCameraChanged.bind(this));
+    this.map.on('pitch', this.handleCameraChanged.bind(this));
+    this.map.on('viewchange', this.handleCameraChanged.bind(this));
+
     // 触发首次渲染
     this.handleCameraChanged();
   }
